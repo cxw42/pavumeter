@@ -1,4 +1,4 @@
-# $Id$
+# $Id: Makefile.am 54 2007-10-30 16:43:04Z lennart $
 #
 # This file is part of PulseAudio Volume Meter.
 #

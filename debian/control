@@ -1,0 +1,27 @@
+Source: pavumeter
+Section: sound
+Priority: optional
+Maintainer: Andrea Colangelo <warp10@ubuntu.com>
+Build-Depends: asciidoc,
+               autotools-dev,
+               debhelper (>= 9),
+               libgtkmm-2.4-dev,
+               libpulse-dev,
+               lynx,
+               xmlto
+Standards-Version: 3.9.3
+Homepage: http://0pointer.de/lennart/projects/pavumeter/
+Vcs-Bzr: lp:~warp10/+junk/pavumeter
+Vcs-Browser: https://code.launchpad.net/~warp10/+junk/pavumeter
+
+Package: pavumeter
+Architecture: any
+Depends: gnome-icon-theme,
+         ${misc:Depends},
+         ${shlibs:Depends}
+Description: PulseAudio Volume Meter
+ PulseAudio, previously known as Polypaudio, is a sound server for POSIX and
+ WIN32 systems. It is a drop in replacement for the ESD sound server with
+ much better latency, mixing/re-sampling quality and overall architecture.
+ .
+ A simple volume meter for the PulseAudio sound server.

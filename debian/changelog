@@ -1,0 +1,74 @@
+pavumeter (0.9.3-4build2) bionic; urgency=high
+
+  * No change rebuild to pick up -fPIE compiler default
+
+ -- Balint Reczey <rbalint@ubuntu.com>  Tue, 03 Apr 2018 12:38:38 +0000
+
+pavumeter (0.9.3-4build1) wily; urgency=medium
+
+  * No-change rebuild against libglibmm-2.4-1v5
+
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Fri, 07 Aug 2015 21:49:58 +0000
+
+pavumeter (0.9.3-4) unstable; urgency=low
+
+  * New maintainer (Closes: #636429).
+  * debian/copyright: updated and DEP5'ed. (Closes: #681498)
+  * debian/control: added Vcs-{Bzr,Browser} tags.
+
+ -- Andrea Colangelo <warp10@ubuntu.com>  Sun, 15 Jul 2012 09:17:11 +0200
+
+pavumeter (0.9.3-3) unstable; urgency=low
+
+  * QA upload.
+  * Switch to dpkg-source 3.0 (quilt) format.
+  * Use script wrap-and-sort.
+  * debian/rules:
+    - Upgrade to tiny version.
+  * debian/control:
+    - Drop quilt and cdbs from Build-Depends, no longer necessary.
+    - Add Homepage field.
+    - Remove 'GTK' from description, makes lintian happy.
+  * debian/docs: Add for install README file.
+  * debian/patches/0002-Drop-deprecated-encoding.patch:
+    - Drop deprecated Encoding field from .desktop files.
+
+ -- Artur Rona <ari-tczew@tlen.pl>  Sat, 30 Jun 2012 01:43:44 +0200
+
+pavumeter (0.9.3-2) unstable; urgency=low
+
+  * QA upload.
+  * Maintainer field set to QA Group.
+  * Standards-Version bumped to 3.9.3.
+  * Debhelper compatibility version set to 9.
+
+ -- Emanuele Rocca <ema@debian.org>  Wed, 09 May 2012 10:36:33 +0000
+
+pavumeter (0.9.3-1) unstable; urgency=low
+
+  * New Upstream Version (Closes: #451720, #448338)
+  * debian/patches/0001-Correct-invalid-category-entry-in-desktop-files.patch:
+    + Added, removes invalid Application category.
+  * debian/menu: Move to Applications section now that Apps is obsolete.
+
+ -- CJ van den Berg <cj@vdbonline.com>  Wed, 21 Nov 2007 17:09:43 +0100
+
+pavumeter (0.9.2-2) unstable; urgency=low
+
+  * debian/pavumeter.1: Fix a typo in pavumeter manpage. (Closes: #410601)
+  * debian/patches/01_use_stock_g2.14_icons.dpatch:
+    - Removed. No longer needed with Gnome 2.18.
+
+ -- CJ van den Berg <cj@vdbonline.com>  Thu, 31 May 2007 23:11:15 +0200
+
+pavumeter (0.9.2-1) unstable; urgency=low
+
+  [ CJ van den Berg ]
+  * Initial release
+
+  [ Loic Minier ]
+  * Depend on gnome-icon-theme for the icons.
+  * Clarify which files are under which license.
+
+ -- Loic Minier <lool@dooz.org>  Tue, 24 Oct 2006 20:53:17 +0200
+

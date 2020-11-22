@@ -1,5 +1,4 @@
 [Desktop Entry]
-Encoding=UTF-8
 Name=PulseAudio Volume Meter (Capture)
 GenericName=Capture Volume Meter
 Comment=Monitor the input volume
@@ -7,4 +6,4 @@ Exec=pavumeter --record
 Icon=audio-input-microphone
 StartupNotify=true
 Type=Application
-Categories=Application;AudioVideo;Audio;
+Categories=AudioVideo;Audio;

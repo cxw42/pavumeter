@@ -1,0 +1,210 @@
+2007-10-30 16:43  lennart
+
+	* Makefile.am, doc/README.html.in: prepare next release
+
+2007-09-06 21:50  lennart
+
+	* configure.ac, src/vumeter.cc: - lower refresh rate to 25 fps
+	  - show pretty channel names
+	  - show device description instead of device name
+
+2007-08-15 23:49  lennart
+
+	* Makefile.am, configure.ac: bump version and add fedora-snapshot
+	  target
+
+2007-08-07 00:21  lennart
+
+	* src/Makefile.am, src/pavumeter-record.desktop,
+	  src/pavumeter.desktop: add seperate desktop file for capture
+
+2007-08-06 22:49  lennart
+
+	* src/vumeter.cc: remove full stop
+
+2007-08-06 17:37  lennart
+
+	* src/vumeter.cc: Handle parameters properly
+
+2007-08-06 15:54  lennart
+
+	* src/vumeter.cc: make sure to use black color for subtitle to be
+	  compatible with all themes
+
+2007-05-23 23:34  lennart
+
+	* LICENSE, autogen.sh, src/vumeter.cc: Fix license mess: change
+	  everything to GPL
+
+2006-07-24 20:17  lennart
+
+	* autogen.sh: Make jhbuild happy by adding a file autgen.sh
+
+2006-07-08 13:56  lennart
+
+	* doc/README.html.in: prepare release 0.9.2
+
+2006-06-21 14:12  lennart
+
+	* src/vumeter.cc: include config.h properly
+
+2006-06-20 23:59  lennart
+
+	* configure.ac: bump requied pa version
+
+2006-06-20 22:28  lennart
+
+	* doc/README.html.in, src/vumeter.cc: s/polyp/pulse/ in README
+
+2006-06-20 22:17  lennart
+
+	* Makefile.am, bootstrap.sh, configure.ac, doc/Makefile.am,
+	  doc/style.css, src/Makefile.am, src/pavumeter.desktop,
+	  src/vumeter.cc: s/polyp/pulse/g
+
+2006-06-02 21:09  lennart
+
+	* src/vumeter.cc: do not show the polypaudio error code if we
+	  terminate ourselves due to a reason that is unrelated to
+	  polypaudio
+
+2006-06-02 20:53  lennart
+
+	* src/Makefile.am: actually ship the .desktop file
+
+2006-06-02 17:05  ossman
+
+	* src/vumeter.cc: Throw up a dialog for critical errors as stderr
+	  might not be visible.
+
+2006-05-31 12:33  ossman
+
+	* src/Makefile.am, src/pavumeter.desktop: Add .desktop file.
+
+2006-05-28 15:44  lennart
+
+	* src/vumeter.cc: set icon for window, add icon to window title
+
+2006-05-26 23:43  lennart
+
+	* configure.ac: bump version
+
+2006-05-26 23:36  lennart
+
+	* doc/README.html.in: doc update
+
+2006-05-13 23:26  lennart
+
+	* configure.ac: bump polypaudio release
+
+2006-04-26 19:17  lennart
+
+	* src/vumeter.cc: compat with 64bit
+
+2006-04-21 20:45  lennart
+
+	* Makefile.am: build system updates
+
+2006-04-21 20:39  lennart
+
+	* bootstrap.sh, configure.ac, doc/README.html.in, doc/style.css:
+	  doc update
+
+2006-04-07 21:54  lennart
+
+	* src/vumeter.cc: * update for newest polypaudio API
+	  * show channel names from channel map
+
+2006-04-07 21:53  lennart
+
+	* configure.ac: update build system a little for polypaudio 0.8
+
+2005-01-08 23:59  lennart
+
+	* configure.ac, src/vumeter.cc: update for polypaudio 0.8
+
+2004-12-03 15:46  lennart
+
+	* doc/README.html.in: readme update
+
+2004-11-21 18:49  lennart
+
+	* configure.ac: bump version numbers
+
+2004-11-17 03:10  lennart
+
+	* src/vumeter.cc: * implement level decaying
+
+2004-10-27 22:43  lennart
+
+	* configure.ac, doc/README.html.in: prepare next release
+
+2004-10-27 01:14  lennart
+
+	* src/vumeter.cc: update to new API
+
+2004-09-29 20:14  lennart
+
+	* configure.ac, src/vumeter.cc: update to polypaudio 0.6
+
+2004-09-20 21:53  lennart
+
+	* doc/README.html.in: prepare for dist
+
+2004-09-16 22:03  lennart
+
+	* src/vumeter.cc: Don't ignore $POLYP_SOURCE
+	  memory leak fix
+
+2004-09-16 00:03  lennart
+
+	* configure.ac, src/vumeter.cc: update for new API
+	  show logarthmic levels
+
+2004-09-12 13:17  lennart
+
+	* src: ignore some more
+
+2004-09-12 13:16  lennart
+
+	* configure.ac, src/Makefile: update to polypaudio 0.5
+
+2004-09-08 00:12  lennart
+
+	* doc/README.html.in: typo fix in homepage
+
+2004-09-07 23:54  lennart
+
+	* ., LICENSE, Makefile.am: prepare for release
+
+2004-09-07 23:49  lennart
+
+	* Makefile.am, doc/README.html.in: do missing paman to pavumeter
+	  replacements
+
+2004-09-07 23:46  lennart
+
+	* ., Makefile.am, bootstrap.sh, configure.ac, doc, doc/Makefile.am,
+	  doc/README.html.in, doc/screenshot.png, doc/style.css, src,
+	  src/Makefile, src/Makefile.am: autotoolize
+
+2004-09-07 14:50  lennart
+
+	* src/vumeter.cc: add a nifty title bar
+
+2004-09-07 14:36  lennart
+
+	* src/vumeter.cc: add support for latencies
+
+2004-09-06 21:55  lennart
+
+	* src, src/Makefile, src/vumeter.cc: make it work
+
+2004-09-06 17:50  lennart
+
+	* src, src/Makefile, src/vumeter.cc: initial commit
+
+2004-09-06 17:48  lennart
+
+	* .: Create trunk directory
+

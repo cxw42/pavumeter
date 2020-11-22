@@ -1,0 +1,106 @@
+# Prerequisites
+*.d
+
+# Object files
+*.o
+*.ko
+*.obj
+*.elf
+
+# Linker output
+*.ilk
+*.map
+*.exp
+pavumeter-*/
+pavumeter-*.tar.gz
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Libraries
+*.lib
+*.a
+*.la
+*.lo
+
+# Shared objects (inc. Windows DLLs)
+*.dll
+*.so
+*.so.*
+*.dylib
+
+# Executables
+*.exe
+*.out
+*.app
+*.i*86
+*.x86_64
+*.hex
+pavumeter
+
+# Debug files
+*.dSYM/
+*.su
+*.idb
+*.pdb
+
+# Coverage
+*.gcda
+*.gcno
+/*coverage.info
+/*coverage/
+
+# Kernel Module Compile Results
+*.mod*
+*.cmd
+.tmp_versions/
+modules.order
+Module.symvers
+Mkfile.old
+dkms.conf
+
+# Temp files
+*.swp
+*.tmp
+*~
+~*
+*.e
+
+# autotools
+/aclocal.m4
+/aminclude_static.am
+/autom4te.cache/
+/build-aux/
+compile
+conf*.dir/
+/config.h
+/config.log
+/config.status
+/configure
+depcomp
+.deps/
+.dirstamp
+install-sh
+Makefile
+Makefile.in
+missing
+*.stamp
+*.stamp-*
+stamp-*
+test-driver
+.Tpo
+
+# dpkg-buildpackage output and other release files
+*.debhelper.log
+.debhelper/
+debian/autoreconf.*
+debian/pavumeter.debhelper.log
+debian/pavumeter/
+debian/files
+debian/tmp
+/pavumeter-*
+*.deb
+*.substvars
+*.changes
+*.buildinfo

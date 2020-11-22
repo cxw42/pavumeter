@@ -1,0 +1,35 @@
+From e356fd3a0973a5d96c72d959593b2d987915a42c Mon Sep 17 00:00:00 2001
+From: CJ van den Berg <cj@vdbonline.com>
+Date: Wed, 28 Nov 2007 23:44:32 +0100
+Subject: [PATCH] Correct invalid category entry in desktop files
+
+This desktop entry lists a category that is not one of the registered
+Main or Additional Categories in the FreeDesktop specification.
+
+Refer to http://standards.freedesktop.org/menu-spec/1.0/apa.html for
+details.
+---
+ src/pavumeter-record.desktop |    2 +-
+ src/pavumeter.desktop        |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/src/pavumeter-record.desktop b/src/pavumeter-record.desktop
+index 6363349..633126a 100644
+--- a/src/pavumeter-record.desktop
++++ b/src/pavumeter-record.desktop
+@@ -7,4 +7,4 @@ Exec=pavumeter --record
+ Icon=audio-input-microphone
+ StartupNotify=true
+ Type=Application
+-Categories=Application;AudioVideo;Audio;
++Categories=AudioVideo;Audio;
+diff --git a/src/pavumeter.desktop b/src/pavumeter.desktop
+index c28d343..c63be3c 100644
+--- a/src/pavumeter.desktop
++++ b/src/pavumeter.desktop
+@@ -7,4 +7,4 @@ Exec=pavumeter
+ Icon=audio-input-microphone
+ StartupNotify=true
+ Type=Application
+-Categories=Application;AudioVideo;Audio;
++Categories=AudioVideo;Audio;

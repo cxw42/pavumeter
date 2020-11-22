@@ -1,5 +1,5 @@
 #!/bin/bash
-# $Id$
+# $Id: bootstrap.sh 40 2006-06-20 22:17:24Z lennart $
 
 # This file is part of PulseAudio Volume Meter.
 #

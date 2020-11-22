@@ -2,7 +2,7 @@
 # -*- Autoconf -*-
 # Process this file with autoconf to produce a configure script.
 
-# $Id$
+# $Id: configure.ac 53 2007-09-06 21:50:05Z lennart $
 
 # This file is part of PulseAudio Volume Meter.
 #

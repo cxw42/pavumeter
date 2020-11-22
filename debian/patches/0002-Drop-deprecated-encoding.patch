@@ -1,0 +1,22 @@
+Description: Drop deprecated field Encoding. For details please look for lintian warning desktop-entry-contains-encoding-key or http://standards.freedesktop.org/desktop-entry-spec/1.0/apc.html
+Forwarded: no, upstream seems dead
+Author: Artur Rona <ari-tczew@tlen.pl>
+
+diff -pruN -x '*~' pavumeter-0.9.3.orig/src/pavumeter.desktop pavumeter-0.9.3/src/pavumeter.desktop
+--- pavumeter-0.9.3.orig/src/pavumeter.desktop	2007-08-07 02:20:01.000000000 +0200
++++ pavumeter-0.9.3/src/pavumeter.desktop	2012-06-20 15:05:11.000000000 +0200
+@@ -1,5 +1,4 @@
+ [Desktop Entry]
+-Encoding=UTF-8
+ Name=PulseAudio Volume Meter (Playback)
+ GenericName=Playback Volume Meter
+ Comment=Monitor the output volume
+diff -pruN -x '*~' pavumeter-0.9.3.orig/src/pavumeter-record.desktop pavumeter-0.9.3/src/pavumeter-record.desktop
+--- pavumeter-0.9.3.orig/src/pavumeter-record.desktop	2007-08-07 02:20:30.000000000 +0200
++++ pavumeter-0.9.3/src/pavumeter-record.desktop	2012-06-20 15:04:56.000000000 +0200
+@@ -1,5 +1,4 @@
+ [Desktop Entry]
+-Encoding=UTF-8
+ Name=PulseAudio Volume Meter (Capture)
+ GenericName=Capture Volume Meter
+ Comment=Monitor the input volume
