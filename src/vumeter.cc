@@ -184,9 +184,13 @@ MainWindow::ChannelInfo::ChannelInfo(MainWindow &w, const Glib::ustring &l) {
     progress = Gtk::manage(new Gtk::ProgressBar());
     progress->set_fraction(0);
 
-    w.table.resize(w.channels.size()+1, 2);
-    w.table.attach(*label, 0, 1, w.channels.size(), w.channels.size()+1, Gtk::FILL, (Gtk::AttachOptions) 0);
-    w.table.attach(*progress, 1, 2, w.channels.size(), w.channels.size()+1, Gtk::EXPAND|Gtk::FILL, (Gtk::AttachOptions) 0);
+    guint row = w.channels.size()*2;
+    w.table.resize(row+1, 2);
+    w.table.attach(*label, 0, 1, row, row+1, Gtk::FILL, (Gtk::AttachOptions) 0);
+    w.table.attach(*progress, 1, 2, row, row+1, Gtk::EXPAND|Gtk::FILL, (Gtk::AttachOptions) 0);
+#ifdef DECIBEL
+    // TODO add the dB meter
+#endif
 }
 
 void MainWindow::pushData(const float *d, unsigned samples) {
