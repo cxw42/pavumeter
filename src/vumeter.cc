@@ -2,17 +2,17 @@
 
 /***
   This file is part of pavumeter.
- 
+
   pavumeter is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published
   by the Free Software Foundation; either version 2 of the License,
   or (at your option) any later version.
- 
+
   pavumeter is distributed in the hope that it will be useful, but
   WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
   General Public License for more details.
- 
+
   You should have received a copy of the GNU General Public License
   along with pavumeter; if not, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
@@ -24,6 +24,7 @@
 #endif
 
 #include <signal.h>
+#include <math.h>
 
 #include <gtkmm.h>
 #include <gtk/gtk.h>
@@ -31,14 +32,15 @@
 #include <pulse/pulseaudio.h>
 #include <pulse/glib-mainloop.h>
 
-#define LOGARITHMIC 1
+//#define LOGARITHMIC 1
+#define DECIBEL 1
 
 class MainWindow : public Gtk::Window {
 
 public:
     MainWindow(const pa_channel_map &map, const char *source_name, const char *description);
     virtual ~MainWindow();
-    
+
 protected:
 
     class ChannelInfo {
@@ -108,7 +110,7 @@ MainWindow::MainWindow(const pa_channel_map &map, const char *, const char *desc
     vbox.pack_start(eventBox, false, false);
 
     image.set_from_icon_name("audio-input-microphone", Gtk::ICON_SIZE_DIALOG);
-    
+
     eventBox.add(titleHBox);
     titleHBox.pack_start(image, false, false);
     titleHBox.pack_end(titleVBox, true, true);
@@ -124,7 +126,7 @@ MainWindow::MainWindow(const pa_channel_map &map, const char *, const char *desc
     snprintf(t, sizeof(t), "<span color=\"black\">Showing signal levels of <b>%s</b></span>", description);
     subtitleLabel.set_markup(t);
     subtitleLabel.set_alignment(0, 0);
-    
+
     vbox.pack_start(separator, false, false);
 
     table.set_border_width(12);
@@ -142,7 +144,7 @@ MainWindow::MainWindow(const pa_channel_map &map, const char *, const char *desc
     levels = NULL;
     display_timeout_signal_connection = Glib::signal_timeout().connect(sigc::mem_fun(*this, &MainWindow::on_display_timeout), 40);
     calc_timeout_signal_connection = Glib::signal_timeout().connect(sigc::mem_fun(*this, &MainWindow::on_calc_timeout), 100);
-    
+
     show_all();
 }
 
@@ -158,10 +160,10 @@ MainWindow::~MainWindow() {
         levelQueue.pop_back();
         delete i;
     }
-    
+
     if (levels)
         delete[] levels;
-    
+
     display_timeout_signal_connection.disconnect();
     calc_timeout_signal_connection.disconnect();
 }
@@ -181,7 +183,7 @@ MainWindow::ChannelInfo::ChannelInfo(MainWindow &w, const Glib::ustring &l) {
 
     progress = Gtk::manage(new Gtk::ProgressBar());
     progress->set_fraction(0);
-    
+
     w.table.resize(w.channels.size()+1, 2);
     w.table.attach(*label, 0, 1, w.channels.size(), w.channels.size()+1, Gtk::FILL, (Gtk::AttachOptions) 0);
     w.table.attach(*progress, 1, 2, w.channels.size(), w.channels.size()+1, Gtk::EXPAND|Gtk::FILL, (Gtk::AttachOptions) 0);
@@ -195,7 +197,7 @@ void MainWindow::pushData(const float *d, unsigned samples) {
         for (unsigned c = 0; c < nchan; c++)
             levels[c] = 0;
     }
-    
+
     while (samples >= nchan) {
 
         for (unsigned c = 0; c < nchan; c++) {
@@ -213,18 +215,22 @@ void MainWindow::showLevels(const LevelInfo &i) {
     unsigned nchan = channels.size();
 
     g_assert(i.levels);
-    
+
     for (unsigned n = 0; n < nchan; n++) {
         double level;
         ChannelInfo *c = channels[n];
 
         level = i.levels[n];
 
-#ifdef LOGARITHMIC            
+#if defined(LOGARITHMIC)
         level = log10(level*9+1);
+#elif defined(DECIBEL)
+	level = 20*log10(fabs(level));
+	level = (level+100)/120;	// show -100dB..+20dB
 #endif
-        
-        c->progress->set_fraction(level > 1 ? 1 : level);
+
+	level = level < 0 ? 0 : (level > 1 ? 1 : level);
+        c->progress->set_fraction(level);
     }
 
 }
@@ -256,11 +262,11 @@ bool MainWindow::on_display_timeout() {
         decayLevels();
         return true;
     }
-    
+
     while (levelQueue.size() > 0) {
         if (i)
             delete i;
-        
+
         i = levelQueue.back();
         levelQueue.pop_back();
 
@@ -272,7 +278,7 @@ bool MainWindow::on_display_timeout() {
         showLevels(*i);
         delete i;
     }
-    
+
     return true;
 }
 
@@ -293,7 +299,7 @@ static void timeval_add_usec(struct timeval *tv, pa_usec_t v) {
     uint32_t sec = v/1000000;
     tv->tv_sec += sec;
     v -= sec*1000000;
-    
+
     tv->tv_usec += v;
 
     while (tv->tv_usec >= 1000000) {
@@ -338,7 +344,7 @@ void show_error(const char *txt, bool show_pa_error = true) {
 
     if (show_pa_error)
         snprintf(buf, sizeof(buf), "%s: %s", txt, pa_strerror(pa_context_errno(context)));
-    
+
     Gtk::MessageDialog dialog(show_pa_error ? buf : txt, false, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_CLOSE, true);
     dialog.run();
 
@@ -348,7 +354,7 @@ void show_error(const char *txt, bool show_pa_error = true) {
 static void stream_update_timing_info_callback(pa_stream *s, int success, void *) {
     pa_usec_t t;
     int negative = 0;
-    
+
     if (!success || pa_stream_get_latency(s, &t, &negative) < 0) {
         show_error("Failed to get latency information");
         return;
@@ -362,7 +368,7 @@ static void stream_update_timing_info_callback(pa_stream *s, int success, void *
 
 static gboolean latency_func(gpointer) {
     pa_operation *o;
-    
+
     if (!stream)
         return false;
 
@@ -370,7 +376,7 @@ static gboolean latency_func(gpointer) {
         g_message("pa_stream_update_timing_info() failed: %s", pa_strerror(pa_context_errno(context)));
     else
         pa_operation_unref(o);
-    
+
     return true;
 }
 
@@ -382,7 +388,7 @@ static void stream_read_callback(pa_stream *s, size_t l, void *) {
         g_message("pa_stream_peek() failed: %s", pa_strerror(pa_context_errno(context)));
         return;
     }
-    
+
     mainWindow->pushData((const float*) p, l/sizeof(float));
 
     pa_stream_drop(s);
@@ -401,11 +407,11 @@ static void stream_state_callback(pa_stream *s, void *) {
             g_timeout_add(100, latency_func, NULL);
             pa_operation_unref(pa_stream_update_timing_info(stream, stream_update_timing_info_callback, NULL));
             break;
-            
+
         case PA_STREAM_FAILED:
             show_error("Connection failed");
             break;
-            
+
         case PA_STREAM_TERMINATED:
             Gtk::Main::quit();
     }
@@ -419,11 +425,11 @@ static void create_stream(const char *name, const char *description, const pa_sa
     device_name = g_strdup(name);
     g_free(device_description);
     device_description = g_strdup(description);
-    
+
     nss.format = PA_SAMPLE_FLOAT32;
     nss.rate = ss.rate;
     nss.channels = ss.channels;
-    
+
     g_message("Using sample format: %s", pa_sample_spec_snprint(t, sizeof(t), &nss));
     g_message("Using channel map: %s", pa_channel_map_snprint(t, sizeof(t), &cmap));
 
@@ -471,7 +477,7 @@ static void context_get_server_info_callback(pa_context *c, const pa_server_info
         }
 
         pa_operation_unref(pa_context_get_sink_info_by_name(c, si->default_sink_name, context_get_sink_info_callback, NULL));
-        
+
     } else if (mode == RECORD) {
 
         if (!si->default_source_name) {
@@ -500,13 +506,13 @@ static void context_state_callback(pa_context *c, void *) {
                 pa_operation_unref(pa_context_get_sink_info_by_name(c, device_name, context_get_sink_info_callback, NULL));
             else
                 pa_operation_unref(pa_context_get_server_info(c, context_get_server_info_callback, NULL));
-            
+
             break;
-            
+
         case PA_CONTEXT_FAILED:
             show_error("Connection failed");
             break;
-            
+
         case PA_CONTEXT_TERMINATED:
             Gtk::Main::quit();
     }
@@ -515,65 +521,65 @@ static void context_state_callback(pa_context *c, void *) {
 int main(int argc, char *argv[]) {
     pa_glib_mainloop *m;
     bool record = false;
-    
+
     signal(SIGPIPE, SIG_IGN);
 
     try {
         Glib::OptionGroup og("PulseAudio Volume Meter", "Control the volume of your PulseAudio Sound Server");
-        
+
         Glib::OptionEntry oe;
         oe.set_long_name("record");
         oe.set_description("Show Record Levels");
         og.add_entry(oe, record);
-            
+
         Glib::OptionContext oc;
         oc.set_main_group(og);
-            
+
         Gtk::Main kit(argc, argv, oc);
-            
+
         mode = record ? RECORD : PLAYBACK;
-            
+
         g_message("Starting in %s mode.", mode == RECORD ? "record" : "playback");
-            
+
         /* Rather ugly and incomplete */
-        if (argc > 1) 
+        if (argc > 1)
             device_name = g_strdup(argv[1]) ;
         else {
             char *e;
             if ((e = getenv(mode == RECORD ? "PULSE_SOURCE" : "PULSE_SINK")))
                 device_name = g_strdup(e);
         }
-            
+
         if (device_name)
             g_message("Using device '%s'", device_name);
-            
+
         m = pa_glib_mainloop_new(g_main_context_default());
         g_assert(m);
-            
+
         context = pa_context_new(pa_glib_mainloop_get_api(m), "PulseAudio Volume Meter");
         g_assert(context);
-            
+
         pa_context_set_state_callback(context, context_state_callback, NULL);
         pa_context_connect(context, NULL, PA_CONTEXT_NOAUTOSPAWN, NULL);
-            
+
         Gtk::Main::run();
-            
+
         if (stream)
             pa_stream_unref(stream);
         if (context)
             pa_context_unref(context);
-            
+
         if (mainWindow)
             delete mainWindow;
-            
+
         if(device_name)
             g_free(device_name);
-            
+
         pa_glib_mainloop_free(m);
 
     } catch (Glib::OptionError) {
         g_message("Bad parameter");
     }
-    
+
     return 0;
 }
