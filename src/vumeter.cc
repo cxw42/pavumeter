@@ -23,6 +23,8 @@
 #include <config.h>
 #endif
 
+#include <string>
+
 #include <signal.h>
 #include <math.h>
 
@@ -34,6 +36,10 @@
 
 //#define LOGARITHMIC 1
 #define DECIBEL 1
+
+const int min_dB = -100;
+const int max_dB = 20;
+const int dB_label_spacing = 20;    // arbitrary choice
 
 class MainWindow : public Gtk::Window {
 
@@ -48,6 +54,9 @@ protected:
         ChannelInfo(MainWindow &w, const Glib::ustring &l);
         Gtk::Label *label;
         Gtk::ProgressBar *progress;
+#ifdef DECIBEL
+        Gtk::HScale *dbscale;
+#endif
     };
 
     Gtk::VBox vbox, titleVBox;
@@ -190,6 +199,17 @@ MainWindow::ChannelInfo::ChannelInfo(MainWindow &w, const Glib::ustring &l) {
     w.table.attach(*progress, 1, 2, row, row+1, Gtk::EXPAND|Gtk::FILL, (Gtk::AttachOptions) 0);
 #ifdef DECIBEL
     // TODO add the dB meter
+    dbscale = Gtk::manage(new Gtk::HScale());
+    dbscale->set_digits(3);
+    dbscale->set_draw_value(false);
+    dbscale->set_sensitive(false);  // display only
+    dbscale->set_range(min_dB, max_dB);
+
+    for(int mark = min_dB; mark <= max_dB; mark += dB_label_spacing) {
+        dbscale->add_mark(mark, Gtk::PositionType::POS_TOP,
+                Glib::ustring::format(mark));
+    }
+    w.table.attach(*dbscale, 1, 2, row+1, row+2, Gtk::EXPAND|Gtk::FILL, (Gtk::AttachOptions) 0);
 #endif
 }
 
@@ -229,11 +249,11 @@ void MainWindow::showLevels(const LevelInfo &i) {
 #if defined(LOGARITHMIC)
         level = log10(level*9+1);
 #elif defined(DECIBEL)
-	level = 20*log10(fabs(level));
-	level = (level+100)/120;	// show -100dB..+20dB
+        level = 20*log10(fabs(level));
+        level = (level-(double)min_dB)/((double)max_dB-min_dB);     // rescale to progress bar
 #endif
 
-	level = level < 0 ? 0 : (level > 1 ? 1 : level);
+        level = level < 0 ? 0 : (level > 1 ? 1 : level);
         c->progress->set_fraction(level);
     }
 
